@@ -6,8 +6,16 @@ pipeline {
    stages{
     stage('CompileandRunSonarAnalysis') {
             steps {	
-		sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=javabuggywebapp -Dsonar.organization=javabuggywebapp -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=1c67a7b0ed4df3e854ccbe03fecf71f381276d13'
-			}
-        } 
-  }
+                dir('jenkins-k8s-sast-sonarcloud-creation') {  // Add this dir block
+                    sh '''
+                        mvn clean verify sonar:sonar \
+                        -Dsonar.projectKey=javabuggywebapp \
+                        -Dsonar.organization=javabuggywebapp \
+                        -Dsonar.host.url=https://sonarcloud.io \
+                        -Dsonar.token=1c67a7b0ed4df3e854ccbe03fecf71f381276d13
+                    '''
+                }
+            } 
+        }
+    }
 }
