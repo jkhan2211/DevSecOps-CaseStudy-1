@@ -1,0 +1,35 @@
+*.ppk
+
+# Terraform local files
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+
+terraform-ec2-jenkins-aws-k8s-infra-creation/*.tfstate.*
+terraform-ec2-jenkins-aws-k8s-infra-creation/*.tfvars.json
+terraform-ec2-jenkins-aws-k8s-infra-creation/.terraform.lock.hcl
+terraform-ec2-jenkins-aws-k8s-infra-creation/.terraform/
+
+
+terraform-ec2-jenkins-aws-k8s-infra-creation/*.pem
+terraform-ec2-jenkins-aws-k8s-infra-creation/*.ppk
+
+
+
+
+# Crash logs
+crash.log
+
+# Override files
+override.tf
+override.tf.json
+
+# Backup files
+*_backup.tfstate
+
+# Sensitive variable files
+*.pem
+*.key
