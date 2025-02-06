@@ -1,0 +1,29 @@
+pipeline {
+  agent any
+  tools { 
+        maven 'Maven_3_2_5'  
+    }
+   stages{
+    stage('CompileandRunSonarAnalysis') {
+            steps {	
+                dir('jenkins-k8s-sast-sonarcloud-creation') {  // Add this dir block
+                    sh '''
+                        mvn clean verify sonar:sonar \
+                        -Dsonar.projectKey=javabuggywebapp \
+                        -Dsonar.organization=javabuggywebapp \
+                        -Dsonar.host.url=https://sonarcloud.io \
+                        -Dsonar.token=1c67a7b0ed4df3e854ccbe03fecf71f381276d13
+                    '''
+                }
+            } 
+        }
+    }
+
+    	stage('RunSCAAnalysisUsingSnyk') {
+            steps {		
+				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+					sh 'mvn snyk:test -fn'
+				}
+			}
+    }	
+}
