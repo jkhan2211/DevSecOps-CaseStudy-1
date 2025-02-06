@@ -17,9 +17,7 @@ pipeline {
                 }
             } 
         }
-    }
-
-    	stage('RunSCAAnalysisUsingSnyk') {
+          	stage('RunSCAAnalysisUsingSnyk') {
             steps {		
 				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
 					sh '''
@@ -27,5 +25,8 @@ pipeline {
                     '''
 				}
 			}
-    }	
+    }
+    }
+
+  	
 }
