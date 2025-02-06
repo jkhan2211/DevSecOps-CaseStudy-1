@@ -6,7 +6,7 @@ pipeline {
    stages{
     stage('CompileandRunSonarAnalysis') {
             steps {	
-                dir('jenkins-k8s-sast-sonarcloud-creation') {  // Add this dir block
+                dir('jenkins-k8s-sast-sca-sonarcloud-creation') {  // Add this dir block
                     sh '''
                         mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=javabuggywebapp \
@@ -22,7 +22,9 @@ pipeline {
     	stage('RunSCAAnalysisUsingSnyk') {
             steps {		
 				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-					sh 'mvn snyk:test -fn'
+					sh '''
+                    mvn snyk:test -fn
+                    '''
 				}
 			}
     }	
