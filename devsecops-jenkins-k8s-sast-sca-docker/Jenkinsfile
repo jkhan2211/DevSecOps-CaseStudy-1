@@ -11,7 +11,7 @@ pipeline {
             steps {	
                 dir('jenkins-k8s-sast-sca-sonarcloud-creation') {
                     sh '''
-                        mvn clean verify sonar:sonar -rf \
+                        mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=javabuggywebapp \
                         -Dsonar.organization=javabuggywebapp \
                         -Dsonar.host.url=https://sonarcloud.io \
@@ -27,7 +27,6 @@ pipeline {
                     dir('jenkins-k8s-sast-sca-sonarcloud-creation') {
                         sh '''
                             mvn snyk:test -fn
-                            mvn snyk:monitor
                         '''
                     }
                 }
