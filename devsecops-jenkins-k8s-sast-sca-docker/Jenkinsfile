@@ -3,10 +3,10 @@ pipeline {
   tools { 
         maven 'Maven_3_2_5'  
     }
-      environment {
+  environment {
         SNYK_TOKEN = credentials('SNYK_TOKEN')
     }
-   stages{
+  stages {
     stage('CompileandRunSonarAnalysis') {
             steps {	
                 dir('jenkins-k8s-sast-sca-sonarcloud-creation') {
@@ -19,38 +19,39 @@ pipeline {
                     '''
                 }
             }
-        }
-      stage('RunSCAAnalysisUsingSnyk') {
+    }
+      
+    stage('RunSCAAnalysisUsingSnyk') {
             steps {
-              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                dir('jenkins-k8s-sast-sca-sonarcloud-creation') {
-                    sh '''
-                        mvn snyk:test -fn
-                        mvn snyk:monitor
-                    '''
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    dir('jenkins-k8s-sast-sca-sonarcloud-creation') {
+                        sh '''
+                            mvn snyk:test -fn
+                            mvn snyk:monitor
+                        '''
+                    }
                 }
             }
-        }
+    }
 
-	stage('Build') { 
+    stage('Build') { 
             steps { 
                withDockerRegistry([credentialsId: "dockerlogin", url: ""]) {
                  script{
-                 app =  docker.build("asg")
+                    app =  docker.build("asg")
                  }
                }
             }
     }
 
-	stage('Push') {
+    stage('Push') {
             steps {
                 script{
                     docker.withRegistry('https://209479307795.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-credentials') {
-                    app.push("latest")
+                        app.push("latest")
                     }
                 }
             }
-    	}
-	    
+    }
   }
 }
