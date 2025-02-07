@@ -11,7 +11,7 @@ pipeline {
             steps {	
                 dir('jenkins-k8s-sast-sca-sonarcloud-creation') {
                     sh '''
-                        mvn clean verify sonar:sonar \
+                        mvn clean verify sonar:sonar -rf \
                         -Dsonar.projectKey=javabuggywebapp \
                         -Dsonar.organization=javabuggywebapp \
                         -Dsonar.host.url=https://sonarcloud.io \
